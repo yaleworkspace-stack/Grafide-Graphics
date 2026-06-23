@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Certificate — Grafide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="manifest" href="../site.webmanifest">
+  <meta name="theme-color" content="#ffffff" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-accent-bars">
+      <span class="bar bar-white"></span>
+      <span class="bar bar-navy"></span>
+      <span class="bar bar-cyan"></span>
+    </div>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../images/logo.png" alt="Grafide logo" class="logo-img" />
+      </a>
+    </div>
+  </nav>
+
+  <section style="max-width:600px;margin:4rem auto;padding:0 2rem;">
+    <p class="section-eyebrow" style="text-align:center;">Certificate Verification</p>
+    <h2 style="text-align:center;margin-bottom:0.5rem;">Verify a Grafide Certificate</h2>
+    <p style="text-align:center;margin-bottom:2rem;">Enter a certificate ID to confirm its authenticity.</p>
+
+    <div style="display:flex;gap:0.75rem;margin-bottom:2rem;">
+      <input type="text" id="certInput" placeholder="GRF-PHOTOSHOP-A3F9C2B1"
+             style="flex:1;padding:0.7rem 1rem;border:1.5px solid var(--border);border-radius:4px;
+                    font-family:var(--font-body);font-size:0.95rem;background:var(--white);outline:none;" />
+      <button class="btn-primary" onclick="verifyCert()">Verify</button>
+    </div>
+
+    <div id="verifyResult"></div>
+  </section>
+
+  <script>
+    const API = 'http://localhost:8080/api';
+
+    // Auto-fill from URL param
+    const params = new URLSearchParams(window.location.search);
+    const idParam = params.get('id');
+    if (idParam) {
+      document.getElementById('certInput').value = idParam;
+      window.addEventListener('DOMContentLoaded', verifyCert);
+    }
+
+    async function verifyCert() {
+      const id  = document.getElementById('certInput').value.trim();
+      const el  = document.getElementById('verifyResult');
+      if (!id) return;
+
+      el.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-light);">Checking...</div>`;
+
+      try {
+        const res  = await fetch(`${API}/certificates/verify/${id}`);
+        const data = await res.json();
+
+        if (data.valid) {
+          const issued = new Date(data.issuedAt).toLocaleDateString('en-GB',
+            { day: 'numeric', month: 'long', year: 'numeric' });
+          el.innerHTML = `
+            <div class="cert-card">
+              <div style="display:flex;align-items:center;justify-content:center;gap:8px;
+                          background:rgba(0,180,216,0.1);border-radius:4px;padding:0.5rem 1rem;
+                          margin-bottom:1.5rem;width:fit-content;margin-inline:auto;">
+                <i class="fa-solid fa-circle-check" style="color:var(--cyan)"></i>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--cyan-dark);
+                             text-transform:uppercase;letter-spacing:0.07em;">Verified Certificate</span>
+              </div>
+              <div class="cert-logo"><img src="../images/logo.png" alt="Grafide logo" class="logo-img cert-logo-img" /></div>
+              <p class="cert-title-text">This certifies that</p>
+              <h3 class="cert-name">${data.studentName}</h3>
+              <p class="cert-course">has successfully completed</p>
+              <h3 style="font-family:var(--font-display);color:var(--navy);font-size:1.5rem;margin-bottom:0.5rem;">
+                ${data.courseName}
+              </h3>
+              <p style="font-size:0.85rem;color:var(--text-muted);">Issued on ${issued}</p>
+              <p class="cert-id">Certificate ID: <strong>${id}</strong></p>
+            </div>`;
+        } else {
+          el.innerHTML = `
+            <div class="auth-wall" style="border-color:#c0392b;">
+              <div style="font-size:2.5rem;margin-bottom:1rem;">❌</div>
+              <h3>Certificate Not Found</h3>
+              <p>No certificate with this ID exists in the Grafide system. Double-check the ID and try again.</p>
+            </div>`;
+        }
+      } catch {
+        el.innerHTML = `<div class="auth-wall"><p>Verification service unavailable. Please try again later.</p></div>`;
+      }
+    }
+
+    document.getElementById('certInput')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') verifyCert();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course — Grafide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/course.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="manifest" href="../site.webmanifest">
+  <meta name="theme-color" content="#ffffff" />
+</head>
+<body>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <div class="auth-panel" id="loginPanel">
+        <p class="auth-eyebrow">Welcome back</p>
+        <h2 class="auth-title">Sign in to Grafide</h2>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <button class="btn-primary full" id="loginBtn">Sign In</button>
+        <p class="auth-switch">No account? <span onclick="switchPanel('signup')">Create one</span></p>
+        <div id="loginError" class="auth-error"></div>
+      </div>
+      <div class="auth-panel hidden" id="signupPanel">
+        <p class="auth-eyebrow">Join the community</p>
+        <h2 class="auth-title">Create your account</h2>
+        <div class="auth-field">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="Your name" />
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 8 characters" />
+        </div>
+        <button class="btn-primary full" id="signupBtn">Create Account</button>
+        <p class="auth-switch">Already have an account? <span onclick="switchPanel('login')">Sign in</span></p>
+        <div id="signupError" class="auth-error"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-accent-bars">
+      <span class="bar bar-white"></span>
+      <span class="bar bar-navy"></span>
+      <span class="bar bar-cyan"></span>
+    </div>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../images/logo.png" alt="Grafide logo" class="logo-img" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      </div>
+      <div class="nav-user hidden" id="navUser">
+        <span class="user-greeting">Hello, <strong id="userName"></strong></span>
+        <button class="btn-ghost" onclick="logout()">Sign Out</button>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+      <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- COURSE LAYOUT -->
+  <div class="course-page">
+
+    <!-- SIDEBAR -->
+    <aside class="course-sidebar" id="courseSidebar">
+      <div class="sidebar-tool-header">
+        <a href="../index.html" class="sidebar-back">
+          <i class="fa-solid fa-arrow-left"></i> All Courses
+        </a>
+        <p class="lesson-eyebrow" style="margin-top:1rem;">Course</p>
+        <h3 class="sidebar-tool-name" id="sidebarToolName">Loading...</h3>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="sidebarProgressFill" style="width:0%"></div>
+        </div>
+        <p class="sidebar-progress-text" id="sidebarProgressText">0 of 0 complete</p>
+      </div>
+      <div id="sidebarLevels"></div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="course-main" id="courseMain">
+      <div class="course-loading">
+        <div class="loading-spinner"></div>
+        <p>Loading course...</p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- QUIZ MODAL -->
+  <div class="modal-overlay" id="quizModal" style="z-index:800;">
+    <div class="modal-box" style="max-width:600px;">
+      <div class="quiz-modal-header">
+        <p class="auth-eyebrow">Level Assessment</p>
+        <h2 class="auth-title" id="quizModalTitle">Quiz</h2>
+      </div>
+      <div id="quizBody"></div>
+      <div id="quizResult" class="hidden"></div>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/course.js"></script>
+</body>
+</html>

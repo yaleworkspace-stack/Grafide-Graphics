@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grafide — Learn Graphics Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#ffffff" />
+</head>
+<body>
+
+  <!-- AUTH MODAL OVERLAY -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+
+      <!-- Login Panel -->
+      <div class="auth-panel" id="loginPanel">
+        <p class="auth-eyebrow">Welcome back</p>
+        <h2 class="auth-title">Sign in to Grafide</h2>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <button class="btn-primary full" id="loginBtn">Sign In</button>
+        <p class="auth-switch">No account? <span onclick="switchPanel('signup')">Create one</span></p>
+        <div id="loginError" class="auth-error"></div>
+      </div>
+
+      <!-- Signup Panel -->
+      <div class="auth-panel hidden" id="signupPanel">
+        <p class="auth-eyebrow">Join the community</p>
+        <h2 class="auth-title">Create your account</h2>
+        <div class="auth-field">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="Your name" />
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 8 characters" />
+        </div>
+        <button class="btn-primary full" id="signupBtn">Create Account</button>
+        <p class="auth-switch">Already have an account? <span onclick="switchPanel('login')">Sign in</span></p>
+        <div id="signupError" class="auth-error"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-accent-bars">
+      <span class="bar bar-white"></span>
+      <span class="bar bar-navy"></span>
+      <span class="bar bar-cyan"></span>
+    </div>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo.png" alt="Grafide logo" class="logo-img" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="pages/about.html">About</a></li>
+        <li><a href="pages/contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      </div>
+      <div class="nav-user hidden" id="navUser">
+        <span class="user-greeting">Hello, <strong id="userName"></strong></span>
+        <button class="btn-ghost" onclick="logout()">Sign Out</button>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html">Home</a>
+      <a href="pages/about.html">About</a>
+      <a href="pages/contact.html">Contact</a>
+      <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+      <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Graphics Design Education</p>
+        <h1 class="hero-title">Learn design.<br /><em>Build your voice.</em></h1>
+        <p class="hero-sub">Structured tutorials, embedded resources, and a learning path that holds you accountable — from first stroke to certified designer.</p>
+        <div class="hero-actions">
+          <button class="btn-primary large" onclick="openModal('signup')">Start Learning Free</button>
+          <a href="#courses" class="btn-ghost large">Browse Courses</a>
+        </div>
+      </div>
+      <div class="hero-brand-words">
+        <span>Authentic</span>
+        <span>Minimalistic</span>
+        <span>Classic</span>
+        <span>Elegant</span>
+        <span>Inspirational</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat"><strong>5</strong><span>Design Tools</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><strong>3 Levels</strong><span>per course</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><strong>Verified</strong><span>Certificates</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><strong>Free</strong><span>to start</span></div>
+  </div>
+
+  <!-- COURSES SECTION -->
+  <section class="courses" id="courses">
+    <div class="section-header">
+      <p class="section-eyebrow">What you'll learn</p>
+      <h2 class="section-title">Choose your tool</h2>
+      <p class="section-sub">Every course follows the same structure: concepts, practice, project, certificate. Pick one and go.</p>
+    </div>
+    <div class="courses-grid">
+
+      <div class="course-card" data-tool="coreldraw">
+        <div class="course-card-top">
+          <span class="course-tag">Vector Design</span>
+          <div class="course-level-dots">
+            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+        <h3 class="course-name">CorelDRAW</h3>
+        <p class="course-desc">Master vector illustration, layout design, and print-ready artwork using CorelDRAW's professional toolkit.</p>
+        <div class="course-meta">
+          <span><i class="fa-regular fa-clock"></i> 12 lessons</span>
+          <span><i class="fa-solid fa-layer-group"></i> 3 levels</span>
+        </div>
+        <a href="pages/course.html?tool=coreldraw" class="course-cta">Start Course <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="course-card" data-tool="photoshop">
+        <div class="course-card-top">
+          <span class="course-tag">Photo Editing</span>
+          <div class="course-level-dots">
+            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+        <h3 class="course-name">Photoshop</h3>
+        <p class="course-desc">From retouching to compositing — learn how professional designers use Photoshop to create impactful visuals.</p>
+        <div class="course-meta">
+          <span><i class="fa-regular fa-clock"></i> 15 lessons</span>
+          <span><i class="fa-solid fa-layer-group"></i> 3 levels</span>
+        </div>
+        <a href="pages/course.html?tool=photoshop" class="course-cta">Start Course <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="course-card" data-tool="illustrator">
+        <div class="course-card-top">
+          <span class="course-tag">Illustration</span>
+          <div class="course-level-dots">
+            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+        <h3 class="course-name">Adobe Illustrator</h3>
+        <p class="course-desc">Build logos, icons, and scalable graphics with the industry standard for vector-based illustration.</p>
+        <div class="course-meta">
+          <span><i class="fa-regular fa-clock"></i> 14 lessons</span>
+          <span><i class="fa-solid fa-layer-group"></i> 3 levels</span>
+        </div>
+        <a href="pages/course.html?tool=illustrator" class="course-cta">Start Course <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="course-card" data-tool="msword">
+        <div class="course-card-top">
+          <span class="course-tag">Layout & Type</span>
+          <div class="course-level-dots">
+            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+        <h3 class="course-name">Microsoft Word</h3>
+        <p class="course-desc">Unlock the design potential in Word — document design, typography, and presentation-quality layouts.</p>
+        <div class="course-meta">
+          <span><i class="fa-regular fa-clock"></i> 10 lessons</span>
+          <span><i class="fa-solid fa-layer-group"></i> 3 levels</span>
+        </div>
+        <a href="pages/course.html?tool=msword" class="course-cta">Start Course <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="course-card" data-tool="canva">
+        <div class="course-card-top">
+          <span class="course-tag">Quick Design</span>
+          <div class="course-level-dots">
+            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+        <h3 class="course-name">Canva</h3>
+        <p class="course-desc">Design social media content, presentations, and branded materials fast — no prior design experience needed.</p>
+        <div class="course-meta">
+          <span><i class="fa-regular fa-clock"></i> 8 lessons</span>
+          <span><i class="fa-solid fa-layer-group"></i> 3 levels</span>
+        </div>
+        <a href="pages/course.html?tool=canva" class="course-cta">Start Course <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="section-header">
+      <p class="section-eyebrow">The method</p>
+      <h2 class="section-title">How Grafide works</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">I</span>
+        <h4>Pick a tool</h4>
+        <p>Choose from five industry-standard design applications and start at your level.</p>
+      </div>
+      <div class="step-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="step">
+        <span class="step-num">II</span>
+        <h4>Work through levels</h4>
+        <p>Each course has three levels — Beginner, Intermediate, Advanced. Complete lessons to unlock the next.</p>
+      </div>
+      <div class="step-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="step">
+        <span class="step-num">III</span>
+        <h4>Earn your certificate</h4>
+        <p>Pass the level assessment and receive a verifiable certificate with a unique ID.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <p class="footer-logo"><img src="images/logo.png" alt="Grafide logo" class="logo-img footer-logo-img" /></p>
+        <p class="footer-tagline">A space dedicated to the art of graphic design. We tell stories, celebrate craft, and build designers.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/grafidemagazines" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com/grafidemagazine" target="_blank" rel="noopener" class="social-link" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://www.pinterest.com/GrafideMagazines" target="_blank" rel="noopener" class="social-link" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>Learn</h5>
+          <a href="pages/course.html?tool=coreldraw">CorelDRAW</a>
+          <a href="pages/course.html?tool=photoshop">Photoshop</a>
+          <a href="pages/course.html?tool=illustrator">Illustrator</a>
+          <a href="pages/course.html?tool=msword">Microsoft Word</a>
+          <a href="pages/course.html?tool=canva">Canva</a>
+        </div>
+        <div class="footer-col">
+          <h5>Information</h5>
+          <a href="#">Terms of Use</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+          <a href="#">About Us</a>
+        </div>
+        <div class="footer-col">
+          <h5>Newsletter</h5>
+          <p class="footer-newsletter-text">Get new lessons and design resources in your inbox.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email" id="newsletterEmail" />
+            <button class="btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Grafide is optimized for learning. Examples are simplified for clarity. &copy; 2026 Grafide. All rights reserved.</p>
+      <div class="footer-accent-bars">
+        <span class="bar bar-white"></span>
+        <span class="bar bar-navy"></span>
+        <span class="bar bar-cyan"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
