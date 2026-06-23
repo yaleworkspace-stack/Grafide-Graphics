@@ -3,23 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Course — Grafide</title>
+  <title>My Dashboard — Grafide</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../css/main.css" />
-  <link rel="stylesheet" href="../css/course.css" />
-  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-  <link rel="shortcut icon" href="../favicon.ico">
-  <link rel="manifest" href="../site.webmanifest">
-  <meta name="theme-color" content="#ffffff" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
 </head>
 <body>
-
-  <!-- AUTH MODAL -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="modal-close" id="closeModal">&times;</button>
@@ -60,7 +52,6 @@
     </div>
   </div>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-accent-bars">
       <span class="bar bar-white"></span>
@@ -75,13 +66,13 @@
         <li><a href="../index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
       </ul>
-      <div class="nav-auth" id="navAuth">
+      <div class="nav-auth hidden" id="navAuth">
         <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
         <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
       </div>
-      <div class="nav-user hidden" id="navUser">
+      <div class="nav-user" id="navUser">
+        <a href="dashboard.html" class="btn-ghost" style="font-size:0.85rem;">Dashboard</a>
         <span class="user-greeting">Hello, <strong id="userName"></strong></span>
         <button class="btn-ghost" onclick="logout()">Sign Out</button>
       </div>
@@ -94,53 +85,97 @@
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
       <a href="dashboard.html">Dashboard</a>
-      <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
-      <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      <button class="btn-ghost" onclick="logout()">Sign Out</button>
     </div>
   </nav>
 
-  <!-- COURSE LAYOUT -->
-  <div class="course-page">
-
-    <!-- SIDEBAR -->
-    <aside class="course-sidebar" id="courseSidebar">
-      <div class="sidebar-tool-header">
-        <a href="../index.html" class="sidebar-back">
-          <i class="fa-solid fa-arrow-left"></i> All Courses
-        </a>
-        <p class="lesson-eyebrow" style="margin-top:1rem;">Course</p>
-        <h3 class="sidebar-tool-name" id="sidebarToolName">Loading...</h3>
-        <div class="sidebar-progress-bar">
-          <div class="sidebar-progress-fill" id="sidebarProgressFill" style="width:0%"></div>
-        </div>
-        <p class="sidebar-progress-text" id="sidebarProgressText">0 of 0 complete</p>
+  <div class="dash-gate" id="dashGate">
+    <div class="auth-wall" style="margin-top:4rem;">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">🔒</div>
+      <h3>Sign in to view your dashboard</h3>
+      <p>Track your progress, resume courses, and access your certificates.</p>
+      <div class="auth-wall-actions">
+        <button class="btn-primary" onclick="openModal('login')">Sign In</button>
+        <button class="btn-ghost" onclick="openModal('signup')">Create Account</button>
       </div>
-      <div id="sidebarLevels"></div>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="course-main" id="courseMain">
-      <div class="course-loading">
-        <div class="loading-spinner"></div>
-        <p>Loading course...</p>
-      </div>
-    </main>
-
-  </div>
-
-  <!-- QUIZ MODAL -->
-  <div class="modal-overlay" id="quizModal" style="z-index:800;">
-    <div class="modal-box" style="max-width:600px;">
-      <div class="quiz-modal-header">
-        <p class="auth-eyebrow">Level Assessment</p>
-        <h2 class="auth-title" id="quizModalTitle">Quiz</h2>
-      </div>
-      <div id="quizBody"></div>
-      <div id="quizResult" class="hidden"></div>
     </div>
   </div>
 
+  <div class="dash-shell hidden" id="dashShell">
+    <div class="dash-hero">
+      <div class="dash-hero-inner">
+        <div>
+          <p class="section-eyebrow">Your Learning Space</p>
+          <h2 class="dash-welcome" id="dashWelcome">Welcome back</h2>
+          <p class="dash-subtitle" id="dashSubtitle">Pick up where you left off.</p>
+        </div>
+        <div class="dash-hero-stats">
+          <div class="dash-hero-stat">
+            <strong id="dashStatCourses">0</strong>
+            <span>Courses Started</span>
+          </div>
+          <div class="dash-hero-stat-divider"></div>
+          <div class="dash-hero-stat">
+            <strong id="dashStatLessons">0</strong>
+            <span>Lessons Done</span>
+          </div>
+          <div class="dash-hero-stat-divider"></div>
+          <div class="dash-hero-stat">
+            <strong id="dashStatCerts">0</strong>
+            <span>Certificates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-body">
+      <section class="dash-section" id="continueSection">
+        <div class="dash-section-header">
+          <h3 class="dash-section-title">Continue Learning</h3>
+          <a href="../index.html#courses" class="dash-section-link">Browse all courses →</a>
+        </div>
+        <div class="dash-cards" id="continueCards">
+          <div class="dash-empty">
+            <i class="fa-solid fa-book-open"></i>
+            <p>You haven’t started any courses yet.</p>
+            <a href="../index.html#courses" class="btn-primary" style="margin-top:1rem;">Browse Courses</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="dash-section" id="certsSection">
+        <div class="dash-section-header">
+          <h3 class="dash-section-title">My Certificates</h3>
+        </div>
+        <div class="dash-certs" id="certCards">
+          <div class="dash-empty">
+            <i class="fa-solid fa-certificate"></i>
+            <p>Complete a course to earn your first certificate.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="dash-section">
+        <div class="dash-section-header">
+          <h3 class="dash-section-title">All Courses</h3>
+        </div>
+        <div class="dash-all-courses" id="allCoursesGrid"></div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
+      <p>© 2024 Grafide. All rights reserved.</p>
+      <div class="footer-accent-bars">
+        <span class="bar bar-white"></span>
+        <span class="bar bar-navy"></span>
+        <span class="bar bar-cyan"></span>
+      </div>
+    </div>
+  </footer>
+
   <script src="../js/main.js"></script>
-  <script src="../js/course.js"></script>
+  <script src="../js/dashboard.js"></script>
 </body>
 </html>

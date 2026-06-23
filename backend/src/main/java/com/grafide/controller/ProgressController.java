@@ -20,27 +20,45 @@ public class ProgressController {
     private final ProgressRepository progressRepository;
     private final CourseRepository courseRepository;
 
-    /** Get all progress for the logged-in user */
+    /**
+     * GET /api/progress
+     * All progress records for the logged-in user.
+     * Used by the dashboard to render course cards.
+     */
     @GetMapping
     public ResponseEntity<List<Progress>> getMyProgress(Authentication auth) {
         String userId = (String) auth.getPrincipal();
         return ResponseEntity.ok(progressRepository.findByUserId(userId));
     }
 
-    /** Get progress for a specific course */
+    /**
+     * GET /api/progress/{courseId}
+     * Progress for a specific course.
+     * Used by the course page to resume from the correct lesson.
+     */
     @GetMapping("/{courseId}")
-    public ResponseEntity<?> getCourseProgress(@PathVariable String courseId,
-                                                Authentication auth) {
+    public ResponseEntity<Progress> getCourseProgress(@PathVariable String courseId,
+                                                     Authentication auth) {
         String userId = (String) auth.getPrincipal();
-        return progressRepository.findByUserIdAndCourseId(userId, courseId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.ok(new Progress())); // empty progress if not started
+        return ResponseEntity.ok(
+            progressRepository
+                .findByUserIdAndCourseId(userId, courseId)
+                .orElseGet(() -> {
+                    Progress empty = new Progress();
+                    empty.setUserId(userId);
+                    empty.setCourseId(courseId);
+                    return empty;
+                })
+        );
     }
 
-    /** Mark a lesson as complete */
+    /**
+     * POST /api/progress/complete
+     * Mark a lesson as complete. Creates a progress record if this is the first lesson.
+     */
     @PostMapping("/complete")
-    public ResponseEntity<?> completeLesson(@RequestBody CompleteRequest req,
-                                             Authentication auth) {
+    public ResponseEntity<Progress> completeLesson(@RequestBody CompleteRequest req,
+                                                    Authentication auth) {
         String userId = (String) auth.getPrincipal();
 
         Progress progress = progressRepository
@@ -51,13 +69,15 @@ public class ProgressController {
                     p.setCourseId(req.getCourseId());
                     courseRepository.findById(req.getCourseId())
                             .ifPresent(c -> p.setCourseSlug(c.getSlug()));
+                    p.setStartedAt(Instant.now());
                     return p;
                 });
 
-        String lessonKey = req.getLevelIndex() + "-" + req.getLessonIndex();
-        if (!progress.getCompletedLessons().contains(lessonKey)) {
-            progress.getCompletedLessons().add(lessonKey);
+        String key = req.getLevelIndex() + "-" + req.getLessonIndex();
+        if (!progress.getCompletedLessons().contains(key)) {
+            progress.getCompletedLessons().add(key);
         }
+
         progress.setCurrentLevelIndex(req.getLevelIndex());
         progress.setCurrentLessonIndex(req.getLessonIndex());
         progress.setUpdatedAt(Instant.now());

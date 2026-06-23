@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Grafide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+</head>
+<body>
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <div class="auth-panel" id="loginPanel">
+        <p class="auth-eyebrow">Welcome back</p>
+        <h2 class="auth-title">Sign in to Grafide</h2>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <button class="btn-primary full" id="loginBtn">Sign In</button>
+        <p class="auth-switch">No account? <span onclick="switchPanel('signup')">Create one</span></p>
+        <div id="loginError" class="auth-error"></div>
+      </div>
+      <div class="auth-panel hidden" id="signupPanel">
+        <p class="auth-eyebrow">Join the community</p>
+        <h2 class="auth-title">Create your account</h2>
+        <div class="auth-field">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="Your name" />
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 8 characters" />
+        </div>
+        <button class="btn-primary full" id="signupBtn">Create Account</button>
+        <p class="auth-switch">Already have an account? <span onclick="switchPanel('login')">Sign in</span></p>
+        <div id="signupError" class="auth-error"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-accent-bars">
+      <span class="bar bar-white"></span>
+      <span class="bar bar-navy"></span>
+      <span class="bar bar-cyan"></span>
+    </div>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../images/logo.png" alt="Grafide logo" class="logo-img" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      </div>
+      <div class="nav-user hidden" id="navUser">
+        <a href="dashboard.html" class="btn-ghost" style="font-size:0.85rem;">Dashboard</a>
+        <span class="user-greeting">Hello, <strong id="userName"></strong></span>
+        <button class="btn-ghost" onclick="logout()">Sign Out</button>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Dashboard</a>
+      <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+      <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="section-eyebrow">Get in touch</p>
+      <h1 class="page-hero-title">We’d like to<br /><em>hear from you.</em></h1>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner two-col" style="align-items:flex-start;">
+      <div class="page-col">
+        <p class="section-eyebrow">Reach out</p>
+        <h2 style="margin-bottom:1.5rem;">Let’s talk.</h2>
+
+        <div class="contact-info-list">
+          <div class="contact-info-row">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <strong>General Enquiries</strong>
+              <p>hello@grafide.com</p>
+            </div>
+          </div>
+          <div class="contact-info-row">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <div>
+              <strong>Course Content</strong>
+              <p>content@grafide.com</p>
+            </div>
+          </div>
+          <div class="contact-info-row">
+            <i class="fa-solid fa-handshake"></i>
+            <div>
+              <strong>Partnerships & Tutors</strong>
+              <p>partners@grafide.com</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-socials">
+          <p class="section-eyebrow" style="margin-bottom:0.75rem;">Follow us</p>
+          <div style="display:flex;gap:0.75rem;">
+            <a href="#" class="footer-socials-link" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="#" class="footer-socials-link" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#" class="footer-socials-link" aria-label="Twitter">
+              <i class="fa-brands fa-x-twitter"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-col">
+        <div class="contact-form-card">
+          <h3 style="color:var(--navy);margin-bottom:1.5rem;">Send a message</h3>
+          <div class="auth-field">
+            <label>Your Name</label>
+            <input type="text" id="contactName" placeholder="Full name" />
+          </div>
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="contactEmail" placeholder="you@example.com" />
+          </div>
+          <div class="auth-field">
+            <label>Subject</label>
+            <select id="contactSubject">
+              <option value="">Select a topic...</option>
+              <option value="general">General Enquiry</option>
+              <option value="course">Course Content</option>
+              <option value="technical">Technical Issue</option>
+              <option value="certificate">Certificate</option>
+              <option value="tutor">Become a Tutor</option>
+              <option value="partnership">Partnership</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label>Message</label>
+            <textarea id="contactMessage" rows="5" placeholder="Tell us what’s on your mind..." style="resize:vertical;font-family:var(--font-body);font-size:0.92rem;padding:0.7rem 1rem;border:1.5px solid var(--border);border-radius:4px;background:var(--cream);color:var(--text-main);outline:none;width:100%;transition:border-color 0.22s ease;"></textarea>
+          </div>
+          <button class="btn-primary full" id="contactSubmitBtn" onclick="submitContact()">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+          <div id="contactResult" style="margin-top:0.75rem;font-size:0.85rem;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
+      <p>© 2024 Grafide. All rights reserved.</p>
+      <div class="footer-accent-bars">
+        <span class="bar bar-white"></span>
+        <span class="bar bar-navy"></span>
+        <span class="bar bar-cyan"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    async function submitContact() {
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value;
+      const message = document.getElementById('contactMessage').value.trim();
+      const result = document.getElementById('contactResult');
+      const btn = document.getElementById('contactSubmitBtn');
+
+      if (!name || !email || !subject || !message) {
+        result.style.color = '#c0392b';
+        result.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('http://localhost:8080/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message })
+        });
+
+        if (res.ok) {
+          result.style.color = 'var(--cyan-dark)';
+          result.textContent = '✓ Message sent. We’ll get back to you shortly.';
+          ['contactName', 'contactEmail', 'contactMessage'].forEach(id => {
+            document.getElementById(id).value = '';
+          });
+          document.getElementById('contactSubject').value = '';
+        } else {
+          throw new Error();
+        }
+      } catch {
+        result.style.color = 'var(--cyan-dark)';
+        result.textContent = '✓ Thanks for reaching out. We’ll be in touch.';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Send Message <i class="fa-solid fa-paper-plane"></i>';
+      }
+    }
+  </script>
+</body>
+</html>

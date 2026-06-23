@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Grafide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+</head>
+<body>
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <div class="auth-panel" id="loginPanel">
+        <p class="auth-eyebrow">Welcome back</p>
+        <h2 class="auth-title">Sign in to Grafide</h2>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <button class="btn-primary full" id="loginBtn">Sign In</button>
+        <p class="auth-switch">No account? <span onclick="switchPanel('signup')">Create one</span></p>
+        <div id="loginError" class="auth-error"></div>
+      </div>
+      <div class="auth-panel hidden" id="signupPanel">
+        <p class="auth-eyebrow">Join the community</p>
+        <h2 class="auth-title">Create your account</h2>
+        <div class="auth-field">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="Your name" />
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 8 characters" />
+        </div>
+        <button class="btn-primary full" id="signupBtn">Create Account</button>
+        <p class="auth-switch">Already have an account? <span onclick="switchPanel('login')">Sign in</span></p>
+        <div id="signupError" class="auth-error"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-accent-bars">
+      <span class="bar bar-white"></span>
+      <span class="bar bar-navy"></span>
+      <span class="bar bar-cyan"></span>
+    </div>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../images/logo.png" alt="Grafide logo" class="logo-img" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      </div>
+      <div class="nav-user hidden" id="navUser">
+        <a href="dashboard.html" class="btn-ghost" style="font-size:0.85rem;">Dashboard</a>
+        <span class="user-greeting">Hello, <strong id="userName"></strong></span>
+        <button class="btn-ghost" onclick="logout()">Sign Out</button>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Dashboard</a>
+      <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+      <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="section-eyebrow">Our story</p>
+      <h1 class="page-hero-title">Design is a language.<br /><em>We teach it.</em></h1>
+      <div class="hero-brand-words" style="margin-top:2rem;">
+        <span>Authentic</span>
+        <span>Minimalistic</span>
+        <span>Classic</span>
+        <span>Elegant</span>
+        <span>Inspirational</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner two-col">
+      <div class="page-col">
+        <p class="section-eyebrow">The mission</p>
+        <h2>Knowledge should be free. Craft should be taught well.</h2>
+      </div>
+      <div class="page-col">
+        <p>Grafide exists because graphics design education is fragmented. YouTube has tutorials. Books have theory. Neither holds you accountable, tracks your progress, or gives you something verifiable to show for it.</p>
+        <p style="margin-top:1rem;">We bring the best resources together, structure them into guided pathways, and turn learning into a measurable journey you can complete and verify.</p>
+        <p style="margin-top:1rem;">Five tools. Three levels each. One platform. Free to start.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-accent-break">
+    <div class="nav-accent-bars" style="justify-content:center;gap:12px;">
+      <span class="bar bar-white" style="width:120px;height:5px;"></span>
+      <span class="bar bar-navy" style="width:120px;height:5px;"></span>
+      <span class="bar bar-cyan" style="width:120px;height:5px;"></span>
+    </div>
+  </div>
+
+  <section class="page-section" style="background:var(--navy);">
+    <div class="page-section-inner">
+      <p class="section-eyebrow" style="color:var(--cyan);text-align:center;">What we stand for</p>
+      <h2 style="color:var(--white);text-align:center;margin-bottom:3rem;">The principles behind Grafide</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <span class="value-num">I</span>
+          <h4>Accessibility</h4>
+          <p>Every first lesson is free. No credit card. No paywall on fundamentals.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-num">II</span>
+          <h4>Structure</h4>
+          <p>Knowledge without structure is noise. Every course follows a deliberate Beginner → Intermediate → Advanced path.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-num">III</span>
+          <h4>Accountability</h4>
+          <p>Progress tracking, level locking, and assessments keep you honest with yourself.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-num">IV</span>
+          <h4>Credibility</h4>
+          <p>Every certificate has a unique ID anyone can verify. What you earn means something.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <p class="section-eyebrow">The curriculum</p>
+      <h2 style="margin-bottom:0.75rem;">Five tools. One skillset.</h2>
+      <p style="max-width:520px;margin-bottom:2.5rem;">We cover the full spectrum — from industry-standard professional tools to accessible entry-level platforms.</p>
+      <div class="tools-list">
+        <div class="tool-row">
+          <span class="tool-num">01</span>
+          <div>
+            <h4>CorelDRAW</h4>
+            <p>Vector illustration, layout design, print-ready artwork.</p>
+          </div>
+          <a href="course.html?tool=coreldraw" class="tool-link">Start <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tool-row">
+          <span class="tool-num">02</span>
+          <div>
+            <h4>Photoshop</h4>
+            <p>Photo editing, compositing, digital painting.</p>
+          </div>
+          <a href="course.html?tool=photoshop" class="tool-link">Start <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tool-row">
+          <span class="tool-num">03</span>
+          <div>
+            <h4>Adobe Illustrator</h4>
+            <p>Logos, icons, scalable vector graphics.</p>
+          </div>
+          <a href="course.html?tool=illustrator" class="tool-link">Start <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tool-row">
+          <span class="tool-num">04</span>
+          <div>
+            <h4>Microsoft Word</h4>
+            <p>Document design, typography, professional layouts.</p>
+          </div>
+          <a href="course.html?tool=msword" class="tool-link">Start <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tool-row">
+          <span class="tool-num">05</span>
+          <div>
+            <h4>Canva</h4>
+            <p>Social media content, branded materials, presentations.</p>
+          </div>
+          <a href="course.html?tool=canva" class="tool-link">Start <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta">
+    <div class="page-section-inner" style="text-align:center;">
+      <h2 style="color:var(--white);margin-bottom:0.75rem;">Ready to start?</h2>
+      <p style="color:rgba(255,255,255,0.6);margin-bottom:2rem;">It’s free. No excuses.</p>
+      <button class="btn-primary large" onclick="openModal('signup')" style="background:var(--white);color:var(--navy);">
+        Create Free Account
+      </button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
+      <p>© 2024 Grafide. All rights reserved.</p>
+      <div class="footer-accent-bars">
+        <span class="bar bar-white"></span>
+        <span class="bar bar-navy"></span>
+        <span class="bar bar-cyan"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
