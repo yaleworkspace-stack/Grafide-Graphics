@@ -136,9 +136,9 @@ async function handleSignup() {
 
   try {
     const res  = await fetch(`${API}/auth/register`, {
-      method: 'POST',
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password, role: 'STUDENT' })
+      body:    JSON.stringify({ name, email, password, termsAccepted: true, role: 'STUDENT' })
     });
     const data = await res.json();
 
@@ -332,16 +332,21 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.auth-field input').forEach(input => {
     input.addEventListener('keydown', e => {
       if (e.key !== 'Enter') return;
-      const panel = input.closest('#loginPanel') ? 'login' : 'signup';
-      panel === 'login' ? handleLogin() : handleSignup();
+      input.closest('#loginPanel') ? handleLogin() : handleSignup();
     });
   });
 
   // Page-specific SEO
-  const path = window.location.pathname;
-  if (path.includes('about'))    setSEOMeta({ title: 'About', description: 'Learn about Grafide — the graphics design learning platform built for structured, accountable learning.' });
-  if (path.includes('contact'))  setSEOMeta({ title: 'Contact', description: 'Get in touch with the Grafide team.' });
-  if (path.includes('dashboard'))setSEOMeta({ title: 'My Dashboard', description: 'Track your learning progress and certificates on Grafide.' });
-  if (path.includes('course'))   setSEOMeta({ title: 'Course', description: 'Learn graphics design with structured lessons, video tutorials, and verified certificates.' });
-  if (path.includes('verify'))   setSEOMeta({ title: 'Verify Certificate', description: 'Verify the authenticity of a Grafide design certificate.' });
+   const path = window.location.pathname;
+  if (path.includes('about'))          setSEOMeta({ title: 'About', description: 'Learn about Grafide — the graphics design learning platform.' });
+  if (path.includes('contact'))        setSEOMeta({ title: 'Contact', description: 'Get in touch with the Grafide team.' });
+  if (path.includes('dashboard'))      setSEOMeta({ title: 'My Dashboard', description: 'Track your learning progress and certificates on Grafide.' });
+  if (path.includes('course'))         setSEOMeta({ title: 'Course', description: 'Learn graphics design with structured lessons and verified certificates.' });
+  if (path.includes('verify'))         setSEOMeta({ title: 'Verify Certificate', description: 'Verify the authenticity of a Grafide certificate.' });
+  if (path.includes('forgot-password'))setSEOMeta({ title: 'Forgot Password', description: 'Reset your Grafide account password.' });
+  if (path.includes('reset-password')) setSEOMeta({ title: 'Reset Password', description: 'Set a new password for your Grafide account.' });
+  if (path.includes('work-with-us'))   setSEOMeta({ title: 'Work With Us', description: 'Partner with Grafide, become a tutor, or get in touch.' });
+  if (path.includes('terms'))          setSEOMeta({ title: 'Terms of Use', description: 'Grafide terms of use and platform rules.' });
+  if (path.includes('privacy'))        setSEOMeta({ title: 'Privacy Policy', description: 'How Grafide handles your personal data.' });
+  if (path.includes('cookies'))        setSEOMeta({ title: 'Cookie Policy', description: 'How Grafide uses cookies and browser storage.' });
 });

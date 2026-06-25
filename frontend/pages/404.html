@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found — Grafide</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    .not-found-wrap {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+    .not-found-inner {
+      max-width: 580px;
+      width: 100%;
+    }
+    .not-found-num {
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 18vw, 12rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      letter-spacing: -4px;
+      margin-bottom: 0;
+    }
+    .not-found-num span { color: var(--cyan); }
+    .not-found-accent {
+      display: flex;
+      gap: 8px;
+      margin: 1rem 0 2rem;
+    }
+    .not-found-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .not-found-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .not-found-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .not-found-links {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .not-found-links p {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .not-found-link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+    .not-found-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1rem;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--navy);
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .not-found-link:hover {
+      border-color: var(--cyan);
+      background: rgba(0,180,216,0.04);
+    }
+    .not-found-link i { color: var(--cyan); font-size: 0.8rem; width: 16px; }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-accent-bars">
+      <span class="bar bar-white"></span>
+      <span class="bar bar-navy"></span>
+      <span class="bar bar-cyan"></span>
+    </div>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../images/logo.png" alt="Grafide" width="120" />
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-divider"></div>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      </div>
+      <div class="nav-user hidden" id="navUser">
+        <div class="nav-user-links">
+          <a href="../index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-user-divider"></div>
+        <a href="dashboard.html" class="btn-dashboard">
+          <i class="fa-solid fa-gauge"></i> Dashboard
+        </a>
+        <span class="user-greeting">Hi, <strong id="userName"></strong></span>
+        <button class="btn-ghost" style="font-size:0.82rem;padding:0.45rem 1rem;" onclick="logout()">
+          Sign Out
+        </button>
+      </div>
+      <button class="nav-burger" id="navBurger"><span></span><span></span><span></span></button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="not-found-wrap">
+    <div class="not-found-inner">
+
+      <div class="not-found-num">4<span>0</span>4</div>
+
+      <div class="not-found-accent">
+        <span class="bar bar-white" style="width:60px;height:4px;display:block;border-radius:2px;"></span>
+        <span class="bar bar-navy" style="width:60px;height:4px;display:block;border-radius:2px;"></span>
+        <span class="bar bar-cyan" style="width:60px;height:4px;display:block;border-radius:2px;"></span>
+      </div>
+
+      <h1 class="not-found-title">Page not found.</h1>
+      <p class="not-found-sub">
+        The page you're looking for doesn't exist, was moved, or the link may be broken.
+        Let's get you back on track.
+      </p>
+
+      <div class="not-found-actions">
+        <a href="../index.html" class="btn-primary">Back to Home</a>
+        <a href="../index.html#courses" class="btn-ghost">Browse Courses</a>
+      </div>
+
+      <div class="not-found-links">
+        <p>Or go directly to</p>
+        <div class="not-found-link-grid">
+          <a href="dashboard.html" class="not-found-link">
+            <i class="fa-solid fa-gauge"></i> Dashboard
+          </a>
+          <a href="course.html?tool=photoshop" class="not-found-link">
+            <i class="fa-solid fa-book-open"></i> Photoshop
+          </a>
+          <a href="course.html?tool=illustrator" class="not-found-link">
+            <i class="fa-solid fa-pen-nib"></i> Illustrator
+          </a>
+          <a href="course.html?tool=coreldraw" class="not-found-link">
+            <i class="fa-solid fa-vector-square"></i> CorelDRAW
+          </a>
+          <a href="course.html?tool=canva" class="not-found-link">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Canva
+          </a>
+          <a href="contact.html" class="not-found-link">
+            <i class="fa-solid fa-envelope"></i> Contact Us
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

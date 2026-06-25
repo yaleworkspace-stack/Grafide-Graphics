@@ -25,23 +25,21 @@ public class User {
 
     private String passwordHash;
 
-    /**
-     * Role-based access:
-     *  STUDENT — default, can take courses, earn certs
-     *  TUTOR   — can create/upload course content (future phase)
-     *  ADMIN   — full access, content management
-     */
     private Role role = Role.STUDENT;
 
-    private List<String> completedLessons = new ArrayList<>();
-    private List<String> earnedCertificates = new ArrayList<>();
+    private List<String> completedLessons    = new ArrayList<>();
+    private List<String> earnedCertificates  = new ArrayList<>();
+
+    /** Terms acceptance — recorded at signup */
+    private boolean termsAccepted   = false;
+    private Instant termsAcceptedAt = null;
 
     private Instant createdAt = Instant.now();
     private Instant updatedAt = Instant.now();
 
-    // Tutor-mode fields (populated when role = TUTOR)
-    private String bio;
-    private boolean tutorApproved = false;
+    // Tutor-mode fields
+    private String  bio            = "";
+    private boolean tutorApproved  = false;
 
     public enum Role {
         STUDENT, TUTOR, ADMIN

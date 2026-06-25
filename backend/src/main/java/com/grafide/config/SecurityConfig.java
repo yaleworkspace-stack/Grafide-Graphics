@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/certificates/verify/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/quizzes/course/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+                .requestMatchers("/api/auth/forgot-password").permitAll()
+                .requestMatchers("/api/auth/reset-password/**").permitAll()
                 // Admin only
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/quizzes").hasRole("ADMIN")
