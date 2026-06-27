@@ -28,13 +28,13 @@ public ResponseEntity<List<Map<String, Object>>> getAllUsers() {
     return ResponseEntity.ok(
         userRepository.findAll().stream().map(u -> {
             Map<String, Object> m = new java.util.LinkedHashMap<>();
-            m.put("id",                  u.getId());
-            m.put("name",                u.getName());
-            m.put("email",               u.getEmail());
-            m.put("role",                u.getRole());
-            m.put("createdAt",           u.getCreatedAt());
-            m.put("earnedCertificates",  u.getEarnedCertificates());
-            m.put("tutorApproved",       u.isTutorApproved());
+            m.put("id",                 u.getId());
+            m.put("name",               u.getName());
+            m.put("email",              u.getEmail());
+            m.put("role",               u.getRole());
+            m.put("createdAt",          u.getCreatedAt());
+            m.put("earnedCertificates", u.getEarnedCertificates());
+            m.put("tutorApproved",      u.isTutorApproved());
             return m;
         }).toList()
     );
