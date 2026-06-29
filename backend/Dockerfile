@@ -1,28 +1,25 @@
-# Use an official OpenJDK runtime as a parent image
+# Stage 1: Build
 FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Set the working directory to /app
-WORKDIR /app
-
-# Copy the mvnw and pom.xml first to cache dependencies
+# Copy configuration files
 COPY backend/mvnw .
 COPY backend/.mvn .mvn
 COPY backend/pom.xml .
 
-# Grant execute permission to the wrapper
+# Grant execute permission
 RUN chmod +x mvnw
-# Download dependencies (this caches the layer)
-RUN ./mvnw dependency:go-offline
 
-# Copy the rest of the source code
+# Copy source code
 COPY backend/src src
 
-# Build the application
+# Perform a standard build (skipping tests to speed up the process)
 RUN ./mvnw clean package -DskipTests
 
-# Expose the port the app runs on
+# Stage 2: Runtime
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+# Copy the built jar from the build stage
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "target/*.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
