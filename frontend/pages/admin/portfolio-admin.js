@@ -108,11 +108,15 @@ function openPortfolioEditor(item = null) {
   toggleThumbnailField();
   updatePortfolioPreview(item?.mediaUrl || '', item?.mediaType || 'IMAGE');
 
-  document.getElementById('portfolioModal').classList.remove('hidden');
+const modal = document.getElementById('portfolioModal');
+modal.classList.remove('hidden');
+modal.style.display = 'flex';
 }
 
 function closePortfolioModal() {
-  document.getElementById('portfolioModal').classList.add('hidden');
+  const modal = document.getElementById('portfolioModal');
+modal.classList.add('hidden');
+modal.style.display = 'none';
   document.getElementById('portfolioPreview').innerHTML = '';
   _editingPortfolio = null;
 }
