@@ -1,5 +1,6 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-slim
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
 
 # Set the working directory to /app
 WORKDIR /app
