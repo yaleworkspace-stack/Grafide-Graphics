@@ -1,10 +1,11 @@
 /* ============================================
-   GRAFIDE — Main JavaScript v4
-   Fixed auth state, restructured nav,
-   toast system, SEO meta helpers
+   GRAFIDE — Main JavaScript v5
+   Fixed: null-reference crash on admin page
+   (handleSignup was called via Enter key on gate
+   inputs that aren't inside #loginPanel or #signupPanel)
    ============================================ */
 
-const API = window.API || 'https://grafide-graphics-backend.onrender.com/api';
+const API = window.API || 'http://localhost:8080/api';
 
 /* ============================================
    TOKEN / SESSION
@@ -24,13 +25,6 @@ const clearSession = () => {
 
 /* ============================================
    NAV AUTH STATE
-   Controls which nav state is visible.
-
-   Logged OUT: nav-links + nav-auth visible
-               (Home, About, Contact | Sign In, Get Started)
-
-   Logged IN:  nav-user visible
-               (Home, About, Contact, Dashboard | Hi Name | Sign Out)
    ============================================ */
 function updateAuthUI() {
   const user  = getUser();
@@ -42,13 +36,11 @@ function updateAuthUI() {
   const userName = document.getElementById('userName');
 
   if (user && token) {
-    // Logged in
     navLinks?.classList.add('hidden');
     navAuth?.classList.add('hidden');
     navUser?.classList.remove('hidden');
     if (userName) userName.textContent = user.name.split(' ')[0];
   } else {
-    // Logged out
     navLinks?.classList.remove('hidden');
     navAuth?.classList.remove('hidden');
     navUser?.classList.add('hidden');
@@ -76,24 +68,33 @@ function closeModal() {
 function switchPanel(panel) {
   document.getElementById('loginPanel')?.classList.toggle('hidden', panel !== 'login');
   document.getElementById('signupPanel')?.classList.toggle('hidden', panel !== 'signup');
-  // Clear errors on switch
-  document.getElementById('loginError') && (document.getElementById('loginError').textContent = '');
-  document.getElementById('signupError') && (document.getElementById('signupError').textContent = '');
+  const loginErr  = document.getElementById('loginError');
+  const signupErr = document.getElementById('signupError');
+  if (loginErr)  loginErr.textContent  = '';
+  if (signupErr) signupErr.textContent = '';
 }
 
 /* ============================================
-   LOGIN
+   LOGIN — null-guarded
    ============================================ */
 async function handleLogin() {
-  const email    = document.getElementById('loginEmail')?.value.trim();
-  const password = document.getElementById('loginPassword')?.value;
-  const errEl    = document.getElementById('loginError');
-  const btn      = document.getElementById('loginBtn');
+  const emailEl    = document.getElementById('loginEmail');
+  const passwordEl = document.getElementById('loginPassword');
+  const errEl      = document.getElementById('loginError');
+  const btn        = document.getElementById('loginBtn');
 
-  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
+  // If the login form isn't on this page, do nothing
+  if (!emailEl || !passwordEl) return;
 
-  btn.textContent = 'Signing in...';
-  btn.disabled    = true;
+  const email    = emailEl.value.trim();
+  const password = passwordEl.value;
+
+  if (!email || !password) {
+    if (errEl) errEl.textContent = 'Please fill in all fields.';
+    return;
+  }
+
+  if (btn) { btn.textContent = 'Signing in...'; btn.disabled = true; }
 
   try {
     const res  = await fetch(`${API}/auth/login`, {
@@ -103,7 +104,10 @@ async function handleLogin() {
     });
     const data = await res.json();
 
-    if (!res.ok) { errEl.textContent = data.message || 'Login failed.'; return; }
+    if (!res.ok) {
+      if (errEl) errEl.textContent = data.message || 'Login failed.';
+      return;
+    }
 
     setSession(data.token, data.user);
     updateAuthUI();
@@ -111,28 +115,39 @@ async function handleLogin() {
     showToast(`Welcome back, ${data.user.name.split(' ')[0]}!`, 'success');
     if (typeof onAuthSuccess === 'function') onAuthSuccess(data.user);
   } catch {
-    errEl.textContent = 'Network error. Is the backend running?';
+    if (errEl) errEl.textContent = 'Network error. Is the backend running?';
   } finally {
-    btn.textContent = 'Sign In';
-    btn.disabled    = false;
+    if (btn) { btn.textContent = 'Sign In'; btn.disabled = false; }
   }
 }
 
 /* ============================================
-   SIGNUP
+   SIGNUP — null-guarded
    ============================================ */
 async function handleSignup() {
-  const name     = document.getElementById('signupName')?.value.trim();
-  const email    = document.getElementById('signupEmail')?.value.trim();
-  const password = document.getElementById('signupPassword')?.value;
-  const errEl    = document.getElementById('signupError');
-  const btn      = document.getElementById('signupBtn');
+  const nameEl     = document.getElementById('signupName');
+  const emailEl    = document.getElementById('signupEmail');
+  const passwordEl = document.getElementById('signupPassword');
+  const errEl      = document.getElementById('signupError');
+  const btn        = document.getElementById('signupBtn');
 
-  if (!name || !email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
-  if (password.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; return; }
+  // If the signup form isn't on this page, do nothing
+  if (!nameEl || !emailEl || !passwordEl) return;
 
-  btn.textContent = 'Creating account...';
-  btn.disabled    = true;
+  const name     = nameEl.value.trim();
+  const email    = emailEl.value.trim();
+  const password = passwordEl.value;
+
+  if (!name || !email || !password) {
+    if (errEl) errEl.textContent = 'Please fill in all fields.';
+    return;
+  }
+  if (password.length < 8) {
+    if (errEl) errEl.textContent = 'Password must be at least 8 characters.';
+    return;
+  }
+
+  if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
 
   try {
     const res  = await fetch(`${API}/auth/register`, {
@@ -142,7 +157,10 @@ async function handleSignup() {
     });
     const data = await res.json();
 
-    if (!res.ok) { errEl.textContent = data.message || 'Signup failed.'; return; }
+    if (!res.ok) {
+      if (errEl) errEl.textContent = data.message || 'Signup failed.';
+      return;
+    }
 
     setSession(data.token, data.user);
     updateAuthUI();
@@ -150,10 +168,9 @@ async function handleSignup() {
     showToast(`Welcome to Grafide, ${data.user.name.split(' ')[0]}!`, 'success');
     if (typeof onAuthSuccess === 'function') onAuthSuccess(data.user);
   } catch {
-    errEl.textContent = 'Network error. Is the backend running?';
+    if (errEl) errEl.textContent = 'Network error. Is the backend running?';
   } finally {
-    btn.textContent = 'Create Account';
-    btn.disabled    = false;
+    if (btn) { btn.textContent = 'Create Account'; btn.disabled = false; }
   }
 }
 
@@ -164,7 +181,6 @@ function logout() {
   clearSession();
   updateAuthUI();
   showToast('Signed out.', 'success');
-  // Redirect to home if on a protected page
   const protectedPages = ['dashboard.html'];
   const onProtected = protectedPages.some(p => window.location.pathname.includes(p));
   if (onProtected) {
@@ -185,7 +201,6 @@ function showToast(msg, type = 'success') {
   }
   toast.textContent = msg;
   toast.className   = `toast ${type}`;
-  // Force reflow for re-trigger
   void toast.offsetWidth;
   toast.classList.add('show');
   clearTimeout(toast._timeout);
@@ -202,7 +217,6 @@ function initBurger() {
   burger.addEventListener('click', () => {
     mobile.classList.toggle('open');
   });
-  // Close on outside click
   document.addEventListener('click', e => {
     if (!burger.contains(e.target) && !mobile.contains(e.target)) {
       mobile.classList.remove('open');
@@ -233,36 +247,30 @@ async function subscribeNewsletter() {
    SEO HELPERS
    ============================================ */
 function setSEOMeta({ title, description, url, type = 'website' } = {}) {
-  // Title
   if (title) {
     document.title = `${title} — Grafide`;
     setMeta('og:title', `${title} — Grafide`);
     setMeta('twitter:title', `${title} — Grafide`);
   }
-  // Description
   if (description) {
     setMeta('description', description);
     setMeta('og:description', description);
     setMeta('twitter:description', description);
   }
-  // URL
   if (url) {
     setMeta('og:url', url);
     setLinkCanonical(url);
   }
-  // Type
   setMeta('og:type', type);
   setMeta('og:site_name', 'Grafide');
   setMeta('twitter:card', 'summary_large_image');
 }
 
 function setMeta(nameOrProp, content) {
-  // Try name first, then property
   let el = document.querySelector(`meta[name="${nameOrProp}"]`)
         || document.querySelector(`meta[property="${nameOrProp}"]`);
   if (!el) {
     el = document.createElement('meta');
-    // og: and twitter: use property, others use name
     if (nameOrProp.startsWith('og:') || nameOrProp.startsWith('twitter:')) {
       el.setAttribute('property', nameOrProp);
     } else {
@@ -313,31 +321,40 @@ document.addEventListener('DOMContentLoaded', () => {
   updateAuthUI();
   initBurger();
 
-  // Modal close
   document.getElementById('closeModal')?.addEventListener('click', closeModal);
   document.getElementById('authModal')?.addEventListener('click', e => {
     if (e.target.id === 'authModal') closeModal();
   });
 
-  // Escape key closes modal
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
   });
 
-  // Auth buttons
   document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
   document.getElementById('signupBtn')?.addEventListener('click', handleSignup);
 
-  // Enter key on inputs
+  /* ---- FIXED: Enter key routing ----
+     Only call handleLogin/handleSignup if the input is
+     ACTUALLY inside #loginPanel or #signupPanel.
+     If it's inside neither (e.g. admin gate inputs with
+     class="auth-field" but no panel ancestor), do nothing —
+     let that page's own Enter-key handler deal with it.
+  */
   document.querySelectorAll('.auth-field input').forEach(input => {
     input.addEventListener('keydown', e => {
       if (e.key !== 'Enter') return;
-      input.closest('#loginPanel') ? handleLogin() : handleSignup();
+      if (input.closest('#loginPanel')) {
+        handleLogin();
+      } else if (input.closest('#signupPanel')) {
+        handleSignup();
+      }
+      // else: belongs to another form (e.g. admin gate) —
+      // that page handles its own Enter key separately.
     });
   });
 
   // Page-specific SEO
-   const path = window.location.pathname;
+  const path = window.location.pathname;
   if (path.includes('about'))          setSEOMeta({ title: 'About', description: 'Learn about Grafide — the graphics design learning platform.' });
   if (path.includes('contact'))        setSEOMeta({ title: 'Contact', description: 'Get in touch with the Grafide team.' });
   if (path.includes('dashboard'))      setSEOMeta({ title: 'My Dashboard', description: 'Track your learning progress and certificates on Grafide.' });

@@ -15,14 +15,15 @@
 window.GRAFIDE_CONFIG = {
 
   /* ---- Change this to your Render URL when deploying ---- */
-  API_BASE_URL: 'https://grafide-backend.onrender.com/api',
+  // API_BASE_URL: 'https://grafide-backend.onrender.com/api',
 
   /* ---- Local dev override ---- */
-  // API_BASE_URL: 'http://localhost:8080/api',
+  API_BASE_URL: 'http://localhost:8080/api',
 
   APP_NAME:    'Grafide',
   APP_VERSION: '1.0.0',
 };
 
 /* Shorthand used across all JS files */
-window.API = window.GRAFIDE_CONFIG.API_BASE_URL;
+// frontend/js/config.js
+window.API = 'https://grafide-graphics-backend.onrender.com/api';
