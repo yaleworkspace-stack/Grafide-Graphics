@@ -203,3 +203,10 @@ Example: `GRF-PHOTOSHOP-A3F9C2B1`
 Verifiable at: `https://grafide.com/verify/GRF-PHOTOSHOP-A3F9C2B1`
 
 The `/api/certificates/verify/{id}` endpoint is public — anyone with the ID can check it.
+
+
+Working locally → keep the API_BASE_URL: 'http://localhost:8080/api' line active (as it is now)
+Deploying to Render → before you push, comment out the localhost line and uncomment the Render line, so:
+
+javascript// API_BASE_URL: 'http://localhost:8080/api',
+API_BASE_URL: 'https://grafide-graphics-backend.onrender.com/api',

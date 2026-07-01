@@ -13,9 +13,9 @@
  *   Admin account already created in MongoDB
  */
 
-const API = 'http://localhost:8080/api';
-const ADMIN_EMAIL = 'test@grafide.com';
-const ADMIN_PASSWORD = 'password123';
+const API = 'https://grafide-graphics-backend.onrender.com/api';
+const ADMIN_EMAIL = 'enochlildon@gmail.com';
+const ADMIN_PASSWORD = 'Jagaban1';
 
 const COURSES = [
   {

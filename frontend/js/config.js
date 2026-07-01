@@ -4,26 +4,26 @@
    Load it FIRST in every HTML page,
    before main.js and all other scripts.
 
-   For local dev:   leave as localhost
-   For production:  change API_BASE_URL to
-                    your Render backend URL
+   For local dev:   API_BASE_URL points to localhost
+   For production:  API_BASE_URL points to Render backend
 
-   Every other JS file uses window.GRAFIDE_API
-   instead of hardcoding the URL.
+   Only ONE of the two API_BASE_URL lines below should
+   be uncommented at a time.
    ============================================ */
 
 window.GRAFIDE_CONFIG = {
 
-  /* ---- Change this to your Render URL when deploying ---- */
-  // API_BASE_URL: 'https://grafide-backend.onrender.com/api',
+  /* ---- LOCAL DEV (uncomment this one while developing locally) ---- */
+  API_BASE_URL: 'https://grafide-graphics-backend.onrender.com/api',
 
-  /* ---- Local dev override ---- */
-  API_BASE_URL: 'http://localhost:8080/api',
+  /* ---- PRODUCTION (uncomment this one before deploying, comment out local) ---- */
+  // API_BASE_URL: 'https://grafide-graphics-backend.onrender.com/api',http://localhost:8080/api
 
   APP_NAME:    'Grafide',
   APP_VERSION: '1.0.0',
 };
 
-/* Shorthand used across all JS files */
-// frontend/js/config.js
-window.API = 'https://grafide-graphics-backend.onrender.com/api';
+/* Shorthand used across all JS files — reads from GRAFIDE_CONFIG above.
+   Do NOT hardcode a URL here. This must always reference
+   window.GRAFIDE_CONFIG.API_BASE_URL so the switch above works. */
+window.API = window.GRAFIDE_CONFIG.API_BASE_URL;
